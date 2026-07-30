@@ -1,23 +1,26 @@
 ﻿# Diso
 
-Jailbreak package (rootless) + license server (Google Sheet) + **Sileo APT repo**.
+Jailbreak package (rootless) + license server + **Sileo APT repo**.
 
-## Them nguon Sileo / Zebra
+## Nguon Sileo / Zebra
 
 ```
 https://bgate6688-create.github.io/Diso/
 ```
 
-1. Sileo → Sources → + → dan link tren  
-2. Refresh → tim **Diso** → Install  
-3. Respring / uicache neu can  
+### Cach them
+1. Sileo → **Sources** → **+**
+2. Dan: `https://bgate6688-create.github.io/Diso/`
+3. Refresh → tim **Diso** → Install
 
-> Repo APT nam trong thu muc `docs/` (GitHub Pages).
+### File APT (trong `docs/`)
+- `Release`, `Packages`, `Packages.gz`, `Packages.bz2`
+- `debs/Diso_4.3.1_iphoneos-arm64.deb`
 
-## Cai dat .deb thu cong
+## Tai .deb truc tiep
 
-- [`release/Diso_4.3.1_iphoneos-arm64.deb`](release/Diso_4.3.1_iphoneos-arm64.deb)
-- Hoac: [`docs/debs/Diso_4.3.1_iphoneos-arm64.deb`](docs/debs/Diso_4.3.1_iphoneos-arm64.deb)
+- Release: https://github.com/bgate6688-create/Diso/releases/tag/v4.3.1
+- Repo: `release/Diso_4.3.1_iphoneos-arm64.deb`
 
 ## License server (kich key Google Sheet)
 
@@ -26,32 +29,28 @@ cd license_server
 python diso_license_server.py
 ```
 
-- Endpoint: `http://PC_IP:7474/check.php`
-- Binary mac dinh: `http://127.0.0.1:7474/`
-- iPhone khac may PC:
+iPhone khac PC:
 
 ```bash
 python patch_license_url.py http://192.168.x.x:7474/
 ```
 
-## Cau truc repo
-
-```
-docs/            # APT repo (Sileo source / GitHub Pages)
-release/         # ban .deb goc
-license_server/  # server kich key + patch URL
-payload/         # DEBIAN + var/jb de dong goi lai
-tools/           # build APT repo
-```
-
-## Yeu cau
-
-- iOS rootless JB, firmware >= 15
-- `ellekit` hoac `mobilesubstrate`
-- Python 3 (license server tren PC)
-
-## Build lai APT index (sau khi doi .deb)
+## Build lai APT index
 
 ```bash
 python tools/build_apt_repo.py
+git add docs && git commit -m "update apt" && git push
 ```
+
+## Luu y quan trong ve GitHub account
+
+Neu may khac **khong** thay repo / Sileo **khong** refresh duoc:
+- Tai khoan GitHub can **public + verify email**
+- Vao https://github.com/settings/emails xac minh email
+- Vao https://github.com/settings/profile dam bao profile/repo public
+- Thu mo an danh: https://github.com/bgate6688-create/Diso (phai ra 200, khong 404)
+
+## Yeu cau may
+
+- iOS rootless JB, firmware >= 15
+- ellekit | mobilesubstrate
