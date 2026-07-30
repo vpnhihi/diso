@@ -1,0 +1,21 @@
+Origin: Diso
+Label: Diso
+Suite: stable
+Version: 1.0
+Codename: diso
+Architectures: iphoneos-arm64
+Components: main
+Description: Diso official APT repository
+Date: Thu, 30 Jul 2026 06:10:11 +0000
+MD5Sum:
+ 2247b8f0f6bbb390c7e71f9dd0931f1a 811 Packages
+ 03c1b6f9eb70203836db40d50bb4712b 453 Packages.gz
+ bcca1353d0e6cad37a04be49e46b044b 501 Packages.bz2
+SHA1:
+ 29856ae9eba9ad208a55b124724dd77d6227ca00 811 Packages
+ adf70c57f5878c9c2a94b943a437133230af0327 453 Packages.gz
+ cce3ac555d78abb7b5315e516ce55d4a7ea37abb 501 Packages.bz2
+SHA256:
+ 42bb9973ccb6b37de035597e635147ef203c3f823c91a0cafc66db736d68c3ac 811 Packages
+ 1a464182dca7826de8023776e2a88bc42aa9ce9a11e79c2c871738971248036b 453 Packages.gz
+ 8cfc903c05fbae367fab656900d3709ffeaca044b5dd4665a4f5a4a922195142 501 Packages.bz2

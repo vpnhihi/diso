@@ -1,0 +1,18 @@
+Package: com.diso.v3
+Name: Diso
+Version: 4.3.1
+Architecture: iphoneos-arm64
+Maintainer: Diso
+Author: Diso
+Section: Tweaks
+Depends: ellekit | mobilesubstrate, firmware (>= 15.0)
+Replaces: com.changeinfoios.tweak, com.changeinfoios.app, com.changeinfoios, com.changeinfoios.bundle, com.changeinfoios.safari, com.changeinfoios.location, com.changeinfoios.zalo, com.changeinfoios.v3
+Conflicts: com.changeinfoios.tweak, com.changeinfoios.bundle, com.changeinfoios.v3
+Provides: com.changeinfoios.tweak
+Filename: debs/Diso_4.3.1_iphoneos-arm64.deb
+Size: 229228
+MD5sum: c5737ceabbc5546098f39f0558f3f667
+SHA1: 79e39eaf89e2711e984d28714829a23064869d29
+SHA256: ec7455cbfd699800d5a3aa56e694645327c3cb720f8cade9fa1849da784a4b61
+Description: Diso device spoof package (rootless). Requires license server for key activation.
+

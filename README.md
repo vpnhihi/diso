@@ -1,74 +1,57 @@
-# Diso
+﻿# Diso
 
-Jailbreak package (rootless) + license server (Google Sheet).
+Jailbreak package (rootless) + license server (Google Sheet) + **Sileo APT repo**.
 
-## Cài đặt nhanh (iPhone)
+## Them nguon Sileo / Zebra
 
-1. Cài file:
-   - [`release/Diso_4.3.1_iphoneos-arm64.deb`](release/Diso_4.3.1_iphoneos-arm64.deb)
-   - Filza / Sileo / `dpkg -i`
-2. Respring hoặc `uicache` nếu icon chưa hiện.
-3. Bật **license server** trên PC (bắt buộc để kích key):
+```
+https://bgate6688-create.github.io/Diso/
+```
+
+1. Sileo → Sources → + → dan link tren  
+2. Refresh → tim **Diso** → Install  
+3. Respring / uicache neu can  
+
+> Repo APT nam trong thu muc `docs/` (GitHub Pages).
+
+## Cai dat .deb thu cong
+
+- [`release/Diso_4.3.1_iphoneos-arm64.deb`](release/Diso_4.3.1_iphoneos-arm64.deb)
+- Hoac: [`docs/debs/Diso_4.3.1_iphoneos-arm64.deb`](docs/debs/Diso_4.3.1_iphoneos-arm64.deb)
+
+## License server (kich key Google Sheet)
 
 ```bash
 cd license_server
 python diso_license_server.py
 ```
 
-Server mặc định: `http://0.0.0.0:7474/check.php`
-
-4. **iPhone và PC khác máy** — đổi URL license sang IP LAN PC (≤ 22 ký tự, có `/` cuối):
+- Endpoint: `http://PC_IP:7474/check.php`
+- Binary mac dinh: `http://127.0.0.1:7474/`
+- iPhone khac may PC:
 
 ```bash
 python patch_license_url.py http://192.168.x.x:7474/
 ```
 
-Sau đó copy binary đã patch vào:
-
-`/var/jb/Applications/Diso.app/Diso`
-
-hoặc build lại `.deb` từ `payload/`.
-
-5. Mở app **Diso** → nhập key trong Google Sheet (trạng thái `CHẠY`).
-
-## Cấu trúc repo (chỉ file cần dùng)
+## Cau truc repo
 
 ```
-release/                  # .deb cài trực tiếp
-license_server/           # server kích key + tool patch URL
-payload/                  # source package (DEBIAN + var/jb) để đóng gói lại
+docs/            # APT repo (Sileo source / GitHub Pages)
+release/         # ban .deb goc
+license_server/  # server kich key + patch URL
+payload/         # DEBIAN + var/jb de dong goi lai
+tools/           # build APT repo
 ```
 
-## License key (Google Sheet)
+## Yeu cau
 
-App đọc key qua license server → Google Sheet:
+- iOS rootless JB, firmware >= 15
+- `ellekit` hoac `mobilesubstrate`
+- Python 3 (license server tren PC)
 
-| Cột | Ý nghĩa |
-|-----|---------|
-| Key | Mã kích |
-| Hạn sử dụng | Số ngày |
-| ID MÁY | UDID / IPF-… (trống = bind máy đầu) |
-| Tình trạng | `CHẠY` = active |
-
-## Đóng gói lại .deb (tùy chọn)
-
-Trên Linux/macOS/WSL:
+## Build lai APT index (sau khi doi .deb)
 
 ```bash
-cd payload
-tar -cJf data.tar.xz var
-tar -cJf control.tar.xz -C DEBIAN .
-echo 2.0 > debian-binary
-ar r ../release/Diso_4.3.1_iphoneos-arm64.deb debian-binary control.tar.xz data.tar.xz
+python tools/build_apt_repo.py
 ```
-
-## Yêu cầu
-
-- iOS rootless jailbreak (Dopamine / …), firmware ≥ 15
-- `ellekit` hoặc `mobilesubstrate`
-- Python 3 (cho license server trên PC)
-
-## Lưu ý
-
-- Binary mặc định trỏ `http://127.0.0.1:7474/` — chỉ đúng nếu server chạy trên chính thiết bị.
-- Dylib spoof giữ nguyên protocol gốc; không cần cấu hình thêm ngoài license server.
