@@ -1,0 +1,21 @@
+# runtime / local
+**/__pycache__/
+**/*.pyc
+**/.DS_Store
+**/Thumbs.db
+license_server/device_bindings.json
+*.bak
+*.pre-ui-patch.bak
+backups/
+.idea/
+.vscode/
+*.log
+
+# secrets / local env
+.env
+.env.*
+
+# rebuild leftovers
+payload/*.tar.xz
+payload/debian-binary
+*.tmp
