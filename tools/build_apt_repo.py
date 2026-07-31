@@ -223,7 +223,7 @@ def main() -> None:
   <p>Nguon Sileo / Zebra (rootless, <code>iphoneos-arm64</code>).</p>
   <div class="box">
     <strong>Them nguon Sileo (dung dung link nay):</strong>
-    <pre>https://vpnhihi.github.io/Diso/</pre>
+    <pre>https://vpnhihi.github.io/diso/</pre>
   </div>
   <div class="box">
     <strong>Package:</strong> Diso 4.3.1 (<code>com.diso.v3</code>)<br/>
