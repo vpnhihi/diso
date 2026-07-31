@@ -5,12 +5,12 @@ Jailbreak package (rootless) + license server + **Sileo APT repo**.
 ## Nguon Sileo / Zebra
 
 ```
-https://bgate6688-create.github.io/Diso/
+https://vpnhihi.github.io/Diso/
 ```
 
 ### Cach them
 1. Sileo → **Sources** → **+**
-2. Dan: `https://bgate6688-create.github.io/Diso/`
+2. Dan: `https://vpnhihi.github.io/Diso/`
 3. Refresh → tim **Diso** → Install
 
 ### File APT (trong `docs/`)
@@ -19,7 +19,7 @@ https://bgate6688-create.github.io/Diso/
 
 ## Tai .deb truc tiep
 
-- Release: https://github.com/bgate6688-create/Diso/releases/tag/v4.3.1
+- Release: https://github.com/vpnhihi/Diso/releases/tag/v4.3.1
 - Repo: `release/Diso_4.3.1_iphoneos-arm64.deb`
 
 ## License server (kich key Google Sheet)
@@ -48,7 +48,7 @@ Neu may khac **khong** thay repo / Sileo **khong** refresh duoc:
 - Tai khoan GitHub can **public + verify email**
 - Vao https://github.com/settings/emails xac minh email
 - Vao https://github.com/settings/profile dam bao profile/repo public
-- Thu mo an danh: https://github.com/bgate6688-create/Diso (phai ra 200, khong 404)
+- Thu mo an danh: https://github.com/vpnhihi/Diso (phai ra 200, khong 404)
 
 ## Yeu cau may
 
