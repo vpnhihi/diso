@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Build a simple Cydia/Sileo-compatible APT repo into docs/ for GitHub Pages."""
+"""Build a Sileo/Zebra-compatible APT repo into docs/ for GitHub Pages.
+
+Provides BOTH layouts so clients work either way:
+  - Flat:  /Packages, /Release, /debs/*.deb
+  - Dist:  /dists/stable/main/binary-iphoneos-arm64/Packages
+"""
 from __future__ import annotations
 
 import bz2
@@ -12,6 +17,72 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DEB_SRC = ROOT / "release" / "Diso_4.3.1_iphoneos-arm64.deb"
 DOCS = ROOT / "docs"
+ARCH = "iphoneos-arm64"
+SUITE = "stable"
+COMPONENT = "main"
+
+
+def file_hashes(path: Path):
+    b = path.read_bytes()
+    return (
+        len(b),
+        hashlib.md5(b).hexdigest(),
+        hashlib.sha1(b).hexdigest(),
+        hashlib.sha256(b).hexdigest(),
+    )
+
+
+def write_packages_set(directory: Path, packages_txt: str) -> list[str]:
+    directory.mkdir(parents=True, exist_ok=True)
+    names = []
+    p = directory / "Packages"
+    p.write_text(packages_txt, encoding="utf-8", newline="\n")
+    names.append("Packages")
+    gz = directory / "Packages.gz"
+    gz.write_bytes(gzip.compress(packages_txt.encode("utf-8"), mtime=0))
+    names.append("Packages.gz")
+    bz = directory / "Packages.bz2"
+    bz.write_bytes(bz2.compress(packages_txt.encode("utf-8")))
+    names.append("Packages.bz2")
+    return names
+
+
+def make_release(
+    *,
+    suite: str | None,
+    codename: str | None,
+    components: str | None,
+    architectures: str,
+    date: str,
+    hash_entries: list[tuple[str, Path]],
+) -> str:
+    """hash_entries: list of (path_in_release_file, filesystem_path)."""
+    md5_lines, sha1_lines, sha256_lines = [], [], []
+    for rel_name, path in hash_entries:
+        sz, m, s1, s256 = file_hashes(path)
+        md5_lines.append(f" {m} {sz} {rel_name}")
+        sha1_lines.append(f" {s1} {sz} {rel_name}")
+        sha256_lines.append(f" {s256} {sz} {rel_name}")
+
+    lines = [
+        "Origin: Diso",
+        "Label: Diso",
+        "Version: 1.0",
+        f"Architectures: {architectures}",
+        "Description: Diso official APT repository",
+        f"Date: {date}",
+    ]
+    if suite:
+        lines.insert(2, f"Suite: {suite}")
+    if codename:
+        lines.insert(3 if suite else 2, f"Codename: {codename}")
+    if components:
+        # keep near Architectures
+        idx = next(i for i, l in enumerate(lines) if l.startswith("Architectures:"))
+        lines.insert(idx + 1, f"Components: {components}")
+
+    lines.extend(["MD5Sum:", *md5_lines, "SHA1:", *sha1_lines, "SHA256:", *sha256_lines, ""])
+    return "\n".join(lines)
 
 
 def main() -> None:
@@ -37,7 +108,7 @@ def main() -> None:
         "Package": "com.diso.v3",
         "Name": "Diso",
         "Version": "4.3.1",
-        "Architecture": "iphoneos-arm64",
+        "Architecture": ARCH,
         "Maintainer": "Diso",
         "Author": "Diso",
         "Section": "Tweaks",
@@ -49,15 +120,16 @@ def main() -> None:
         ),
         "Conflicts": "com.changeinfoios.tweak, com.changeinfoios.bundle, com.changeinfoios.v3",
         "Provides": "com.changeinfoios.tweak",
-        "Description": (
-            "Diso device spoof package (rootless). "
-            "Requires license server for key activation."
-        ),
+        # Path from repository root (works for both flat and dist layouts)
         "Filename": f"debs/{deb_name}",
         "Size": str(size),
         "MD5sum": md5,
         "SHA1": sha1,
         "SHA256": sha256,
+        "Description": (
+            "Diso device spoof package (rootless). "
+            "Requires license server for key activation."
+        ),
     }
 
     order = [
@@ -80,53 +152,57 @@ def main() -> None:
         "Description",
     ]
     packages_txt = "\n".join(f"{k}: {control[k]}" for k in order) + "\n\n"
-    (DOCS / "Packages").write_text(packages_txt, encoding="utf-8", newline="\n")
-    (DOCS / "Packages.gz").write_bytes(
-        gzip.compress(packages_txt.encode("utf-8"), mtime=0)
-    )
-    (DOCS / "Packages.bz2").write_bytes(bz2.compress(packages_txt.encode("utf-8")))
-
-    def file_hashes(path: Path):
-        b = path.read_bytes()
-        return (
-            len(b),
-            hashlib.md5(b).hexdigest(),
-            hashlib.sha1(b).hexdigest(),
-            hashlib.sha256(b).hexdigest(),
-        )
-
     now = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
-    files = ["Packages", "Packages.gz", "Packages.bz2"]
-    md5_lines = []
-    sha1_lines = []
-    sha256_lines = []
-    for f in files:
-        sz, m, s1, s256 = file_hashes(DOCS / f)
-        md5_lines.append(f" {m} {sz} {f}")
-        sha1_lines.append(f" {s1} {sz} {f}")
-        sha256_lines.append(f" {s256} {sz} {f}")
 
-    release = "\n".join(
+    # --- Flat layout (deb https://host/path/ ./) ---
+    write_packages_set(DOCS, packages_txt)
+    flat_release = make_release(
+        suite=None,
+        codename=None,
+        components=None,
+        architectures=ARCH,
+        date=now,
+        hash_entries=[
+            ("Packages", DOCS / "Packages"),
+            ("Packages.gz", DOCS / "Packages.gz"),
+            ("Packages.bz2", DOCS / "Packages.bz2"),
+        ],
+    )
+    (DOCS / "Release").write_text(flat_release, encoding="utf-8", newline="\n")
+
+    # --- Dist layout (deb https://host/path/ stable main) ---
+    binary_dir = DOCS / "dists" / SUITE / COMPONENT / f"binary-{ARCH}"
+    write_packages_set(binary_dir, packages_txt)
+
+    # per-arch Release (optional but helpful)
+    arch_rel = "\n".join(
         [
-            "Origin: Diso",
-            "Label: Diso",
-            "Suite: stable",
-            "Version: 1.0",
-            "Codename: diso",
-            "Architectures: iphoneos-arm64",
-            "Components: main",
-            "Description: Diso official APT repository",
-            f"Date: {now}",
-            "MD5Sum:",
-            *md5_lines,
-            "SHA1:",
-            *sha1_lines,
-            "SHA256:",
-            *sha256_lines,
+            f"Archive: {SUITE}",
+            f"Origin: Diso",
+            f"Label: Diso",
+            f"Component: {COMPONENT}",
+            f"Architecture: {ARCH}",
             "",
         ]
     )
-    (DOCS / "Release").write_text(release, encoding="utf-8", newline="\n")
+    (binary_dir / "Release").write_text(arch_rel, encoding="utf-8", newline="\n")
+
+    dist_release = make_release(
+        suite=SUITE,
+        codename="diso",
+        components=COMPONENT,
+        architectures=ARCH,
+        date=now,
+        hash_entries=[
+            (f"{COMPONENT}/binary-{ARCH}/Packages", binary_dir / "Packages"),
+            (f"{COMPONENT}/binary-{ARCH}/Packages.gz", binary_dir / "Packages.gz"),
+            (f"{COMPONENT}/binary-{ARCH}/Packages.bz2", binary_dir / "Packages.bz2"),
+            (f"{COMPONENT}/binary-{ARCH}/Release", binary_dir / "Release"),
+        ],
+    )
+    (DOCS / "dists" / SUITE / "Release").write_text(
+        dist_release, encoding="utf-8", newline="\n"
+    )
 
     index = """<!DOCTYPE html>
 <html lang="vi">
@@ -144,16 +220,16 @@ def main() -> None:
 </head>
 <body>
   <h1>Diso APT Repository</h1>
-  <p>Nguồn Sileo / Zebra (rootless, <code>iphoneos-arm64</code>).</p>
+  <p>Nguon Sileo / Zebra (rootless, <code>iphoneos-arm64</code>).</p>
   <div class="box">
-    <strong>Them nguon Sileo:</strong>
+    <strong>Them nguon Sileo (dung dung link nay):</strong>
     <pre>https://vpnhihi.github.io/Diso/</pre>
   </div>
   <div class="box">
     <strong>Package:</strong> Diso 4.3.1 (<code>com.diso.v3</code>)<br/>
     <a href="debs/Diso_4.3.1_iphoneos-arm64.deb">Tai .deb truc tiep</a>
   </div>
-  <p>Sau khi cai: bat license server tren PC de kich key (xem README tren GitHub).</p>
+  <p>Yeu cau: jailbreak <b>rootless</b> (Dopamine…), iOS &gt;= 15, ellekit/mobilesubstrate.</p>
 </body>
 </html>
 """

@@ -1,12 +1,9 @@
 Origin: Diso
 Label: Diso
-Suite: stable
 Version: 1.0
-Codename: diso
 Architectures: iphoneos-arm64
-Components: main
 Description: Diso official APT repository
-Date: Fri, 31 Jul 2026 09:52:31 +0000
+Date: Fri, 31 Jul 2026 10:10:41 +0000
 MD5Sum:
  2247b8f0f6bbb390c7e71f9dd0931f1a 811 Packages
  03c1b6f9eb70203836db40d50bb4712b 453 Packages.gz
