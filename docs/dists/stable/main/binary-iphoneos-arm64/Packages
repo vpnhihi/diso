@@ -1,16 +1,16 @@
 Package: com.diso.v3
-Version: 4.3.6
+Version: 4.3.7
 Section: Tweaks
 Maintainer: Diso
 Architecture: iphoneos-arm64
 Depends: firmware (>= 15.0)
 Replaces: com.changeinfoios.tweak, com.changeinfoios.app, com.changeinfoios, com.changeinfoios.bundle, com.changeinfoios.safari, com.changeinfoios.location, com.changeinfoios.zalo, com.changeinfoios.v3
 Provides: com.changeinfoios.tweak
-Filename: debs/Diso_4.3.6_iphoneos-arm64.deb
-Size: 247280
-MD5sum: 479bfa2e734645a71e1151edd3db672f
-SHA1: 0517fd98bfbb39dabde33a4408af9b834f3dc9b9
-SHA256: 07464097c1bb6123559daa8ba57421badccf8cc1fd27873c1ebd66f67101e1d6
+Filename: debs/Diso_4.3.7_iphoneos-arm64.deb
+Size: 247332
+MD5sum: 5eb5cd2c93f2491bf79f9b9daeb190d4
+SHA1: 63052b835b776bd574572be1dcd98d9d8eb5c97e
+SHA256: 0e5503236fac262b1b510855f905af3189edecee77f2adaaefabe81f848277cb
 Description: Diso device spoof package for rootless jailbreak (Dopamine). Full black UI, new icons.
 Name: Diso
 Author: Diso
