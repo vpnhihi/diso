@@ -1,24 +1,24 @@
 Origin: Diso
 Label: Diso
 Suite: stable
-Codename: diso
 Version: 1.0
+Codename: ios
 Architectures: iphoneos-arm64
 Components: main
 Description: Diso official APT repository
-Date: Fri, 31 Jul 2026 10:13:02 +0000
+Date: Sun, 02 Aug 2026 08:37:49 +0000
 MD5Sum:
- 2247b8f0f6bbb390c7e71f9dd0931f1a 811 main/binary-iphoneos-arm64/Packages
- 03c1b6f9eb70203836db40d50bb4712b 453 main/binary-iphoneos-arm64/Packages.gz
- bcca1353d0e6cad37a04be49e46b044b 501 main/binary-iphoneos-arm64/Packages.bz2
+ 4bb2a919e0fbfd0cb429f1389b706a02 813 main/binary-iphoneos-arm64/Packages
+ 737e7a0d914f4be5b99e2b1720a9b881 455 main/binary-iphoneos-arm64/Packages.gz
+ 4bbf6c854a3ba81467c2874c5588040d 504 main/binary-iphoneos-arm64/Packages.bz2
  acda2ec60e5bcf4c4f67a7305f327e83 86 main/binary-iphoneos-arm64/Release
 SHA1:
- 29856ae9eba9ad208a55b124724dd77d6227ca00 811 main/binary-iphoneos-arm64/Packages
- adf70c57f5878c9c2a94b943a437133230af0327 453 main/binary-iphoneos-arm64/Packages.gz
- cce3ac555d78abb7b5315e516ce55d4a7ea37abb 501 main/binary-iphoneos-arm64/Packages.bz2
+ 25e3ea92ce7a0b8007bf92ffadd5b82470bc3574 813 main/binary-iphoneos-arm64/Packages
+ db099c9b78da3cf0a54c97f37bfbf22342bf43cb 455 main/binary-iphoneos-arm64/Packages.gz
+ 6793fdb5dc1c9c683025ea3c8621ebf991146583 504 main/binary-iphoneos-arm64/Packages.bz2
  7062a4cb263f2340a2a8b4a3073816facb7a0bcc 86 main/binary-iphoneos-arm64/Release
 SHA256:
- 42bb9973ccb6b37de035597e635147ef203c3f823c91a0cafc66db736d68c3ac 811 main/binary-iphoneos-arm64/Packages
- 1a464182dca7826de8023776e2a88bc42aa9ce9a11e79c2c871738971248036b 453 main/binary-iphoneos-arm64/Packages.gz
- 8cfc903c05fbae367fab656900d3709ffeaca044b5dd4665a4f5a4a922195142 501 main/binary-iphoneos-arm64/Packages.bz2
+ 10c15e9d8b1f7e48a01f1d6c8d088f1059e9b34e9931d8684229025e1555c6da 813 main/binary-iphoneos-arm64/Packages
+ 89d35b1136de6f9e66c0add88628aec8db2a0b9aee8a2671e8fd9ee3fbc23ce2 455 main/binary-iphoneos-arm64/Packages.gz
+ f454c9a4047e5c692215cf571f624c16c1aea1101c4effdea2a946f4aa5e46e6 504 main/binary-iphoneos-arm64/Packages.bz2
  f0584bf25422f614fa147fc1284e92d544e65ed0584e8500206ee45e42cc8c9b 86 main/binary-iphoneos-arm64/Release
