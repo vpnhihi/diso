@@ -1,19 +1,47 @@
+Package: ellekit
+Version: 0.0.1-diso
+Section: System
+Maintainer: Diso
+Architecture: iphoneos-arm64
+Filename: ./debs/ellekit_0.0.1-diso_iphoneos-arm64.deb
+Size: 764
+MD5sum: 8e98a8506d77e25b5a1df639efcff8bc
+SHA1: 227b7d92ab4e8c3f052e32af14cd81077fc1448a
+SHA256: 56418e46beaae089f22f87c1ead4a764bfb515164aeccaee341dce3fe4fff83e
+Description: Meta package to satisfy Diso dependency (system injector on rootless JB).
+Name: ellekit
+Priority: optional
+
+Package: mobilesubstrate
+Version: 0.0.1-diso
+Section: System
+Maintainer: Diso
+Architecture: iphoneos-arm64
+Filename: ./debs/mobilesubstrate_0.0.1-diso_iphoneos-arm64.deb
+Size: 760
+MD5sum: 068abfc70a45a11433a18420b0dee2bc
+SHA1: 5b276c5a50a09b986209ff4de89f6c36ebe054f1
+SHA256: df41c3152e5084a6491a1d6f2db78b8d8ab8afc26c6f3ddd475609296a279307
+Description: Meta package to satisfy Diso dependency.
+Name: MobileSubstrate
+Priority: optional
+
 Package: com.diso.v3
 Version: 4.3.1
 Section: Tweaks
 Maintainer: Diso
 Architecture: iphoneos-arm64
+Depends: ellekit, mobilesubstrate, firmware (>= 15.0)
+Replaces: com.changeinfoios.tweak, com.changeinfoios.app, com.changeinfoios, com.changeinfoios.bundle, com.changeinfoios.safari, com.changeinfoios.location, com.changeinfoios.zalo, com.changeinfoios.v3
+Conflicts: com.changeinfoios.tweak, com.changeinfoios.bundle, com.changeinfoios.v3
+Provides: com.changeinfoios.tweak
 Filename: ./debs/Diso_4.3.1_iphoneos-arm64.deb
-Size: 229228
-MD5sum: c5737ceabbc5546098f39f0558f3f667
-SHA1: 79e39eaf89e2711e984d28714829a23064869d29
-SHA256: ec7455cbfd699800d5a3aa56e694645327c3cb720f8cade9fa1849da784a4b61
+Size: 229488
+MD5sum: f070383c335c27b1602b94765488a0e4
+SHA1: 562c17a335cbbcb08f44cd8bc57964a052a29189
+SHA256: aee2ea06c0a2f9a5ecba02ab536360fef7b46020b5f7d37e553f955b82e6f070
 Description: Diso device spoof package for rootless jailbreak (Dopamine).
 Name: Diso
 Author: Diso
 Icon: https://vpnhihi.github.io/diso/icons/diso.png
-Depends: firmware (>= 15.0)
-Replaces: com.changeinfoios.tweak, com.changeinfoios.app, com.changeinfoios, com.changeinfoios.bundle, com.changeinfoios.safari, com.changeinfoios.location, com.changeinfoios.zalo, com.changeinfoios.v3
-Conflicts: com.changeinfoios.tweak, com.changeinfoios.bundle, com.changeinfoios.v3
-Provides: com.changeinfoios.tweak
 

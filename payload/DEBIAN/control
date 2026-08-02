@@ -2,11 +2,11 @@ Package: com.diso.v3
 Name: Diso
 Version: 4.3.1
 Architecture: iphoneos-arm64
-Description: Diso — clone of ChangeInfoIos v3. Focused device-spoof for popular iOS apps. Zero injection into target apps; central spoof in MobileGestaltHelper + CoreTelephony daemons.
 Maintainer: Diso
 Author: Diso
 Section: Tweaks
-Depends: ellekit | mobilesubstrate, firmware (>= 15.0)
+Depends: ellekit, mobilesubstrate, firmware (>= 15.0)
 Replaces: com.changeinfoios.tweak, com.changeinfoios.app, com.changeinfoios, com.changeinfoios.bundle, com.changeinfoios.safari, com.changeinfoios.location, com.changeinfoios.zalo, com.changeinfoios.v3
 Conflicts: com.changeinfoios.tweak, com.changeinfoios.bundle, com.changeinfoios.v3
 Provides: com.changeinfoios.tweak
+Description: Diso device spoof package for rootless jailbreak (Dopamine). Pulls ellekit + mobilesubstrate meta packages from this repo.
