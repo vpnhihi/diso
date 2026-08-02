@@ -9,7 +9,7 @@ Depends: ellekit | mobilesubstrate, firmware (>= 15.0)
 Replaces: com.changeinfoios.tweak, com.changeinfoios.app, com.changeinfoios, com.changeinfoios.bundle, com.changeinfoios.safari, com.changeinfoios.location, com.changeinfoios.zalo, com.changeinfoios.v3
 Conflicts: com.changeinfoios.tweak, com.changeinfoios.bundle, com.changeinfoios.v3
 Provides: com.changeinfoios.tweak
-Filename: ./debs/Diso_4.3.1_iphoneos-arm64.deb
+Filename: debs/Diso_4.3.1_iphoneos-arm64.deb
 Size: 229228
 MD5sum: c5737ceabbc5546098f39f0558f3f667
 SHA1: 79e39eaf89e2711e984d28714829a23064869d29

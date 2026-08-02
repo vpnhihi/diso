@@ -6,19 +6,3 @@ Codename: ios
 Architectures: iphoneos-arm64
 Components: main
 Description: Diso official APT repository
-Date: Sun, 02 Aug 2026 08:37:49 +0000
-MD5Sum:
- 4bb2a919e0fbfd0cb429f1389b706a02 813 main/binary-iphoneos-arm64/Packages
- 737e7a0d914f4be5b99e2b1720a9b881 455 main/binary-iphoneos-arm64/Packages.gz
- 4bbf6c854a3ba81467c2874c5588040d 504 main/binary-iphoneos-arm64/Packages.bz2
- acda2ec60e5bcf4c4f67a7305f327e83 86 main/binary-iphoneos-arm64/Release
-SHA1:
- 25e3ea92ce7a0b8007bf92ffadd5b82470bc3574 813 main/binary-iphoneos-arm64/Packages
- db099c9b78da3cf0a54c97f37bfbf22342bf43cb 455 main/binary-iphoneos-arm64/Packages.gz
- 6793fdb5dc1c9c683025ea3c8621ebf991146583 504 main/binary-iphoneos-arm64/Packages.bz2
- 7062a4cb263f2340a2a8b4a3073816facb7a0bcc 86 main/binary-iphoneos-arm64/Release
-SHA256:
- 10c15e9d8b1f7e48a01f1d6c8d088f1059e9b34e9931d8684229025e1555c6da 813 main/binary-iphoneos-arm64/Packages
- 89d35b1136de6f9e66c0add88628aec8db2a0b9aee8a2671e8fd9ee3fbc23ce2 455 main/binary-iphoneos-arm64/Packages.gz
- f454c9a4047e5c692215cf571f624c16c1aea1101c4effdea2a946f4aa5e46e6 504 main/binary-iphoneos-arm64/Packages.bz2
- f0584bf25422f614fa147fc1284e92d544e65ed0584e8500206ee45e42cc8c9b 86 main/binary-iphoneos-arm64/Release
