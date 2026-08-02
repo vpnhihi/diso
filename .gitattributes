@@ -1,0 +1,9 @@
+* text=auto eol=lf
+docs/Packages text eol=lf
+docs/Release text eol=lf
+docs/Packages.gz binary
+docs/Packages.bz2 binary
+docs/dists/** text eol=lf
+docs/dists/**/Packages.gz binary
+docs/dists/**/Packages.bz2 binary
+docs/**/*.deb binary
