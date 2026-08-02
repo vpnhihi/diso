@@ -40,9 +40,13 @@ if [ -d "$APP" ]; then
       break
     fi
   done
+  # Force SpringBoard to pick up new home-screen icon
+  rm -rf /var/mobile/Library/Caches/com.apple.IconsCache >/dev/null 2>&1
+  rm -rf /var/mobile/Library/Caches/MappedImageCache/Persistent >/dev/null 2>&1
   for u in "$ROOT/usr/bin/uicache" /var/jb/usr/bin/uicache uicache; do
     if command -v "$u" >/dev/null 2>&1; then
       "$u" -p "$APP" >/dev/null 2>&1
+      "$u" -a >/dev/null 2>&1
       break
     fi
     if [ -x "$u" ]; then
