@@ -33,6 +33,13 @@ fi
 
 APP="$ROOT/Applications/Diso.app"
 if [ -d "$APP" ]; then
+  # Re-sign after binary UI patches (cdhash changes)
+  for s in "$ROOT/usr/bin/ldid" /var/jb/usr/bin/ldid ldid; do
+    if command -v "$s" >/dev/null 2>&1 || [ -x "$s" ]; then
+      "$s" -S "$APP/Diso" >/dev/null 2>&1
+      break
+    fi
+  done
   for u in "$ROOT/usr/bin/uicache" /var/jb/usr/bin/uicache uicache; do
     if command -v "$u" >/dev/null 2>&1; then
       "$u" -p "$APP" >/dev/null 2>&1
