@@ -255,7 +255,7 @@ a.btn{display:inline-block;background:#16a34a;color:#fff;padding:12px 16px;borde
 </head><body>
 <h1>Diso APT Repository</h1>
 <div class="box"><b>Nguon Sileo:</b><pre>https://vpnhihi.github.io/diso/</pre></div>
-<div class="box"><b>Packages:</b> Diso, ellekit (meta), mobilesubstrate (meta)<br/>
+<div class="box"><b>Package:</b> Diso 4.3.1 (rootless)<br/>
 <a class="btn" href="debs/Diso_4.3.1_iphoneos-arm64.deb">Tai Diso.deb</a></div>
 </body></html>
 """
@@ -265,31 +265,9 @@ a.btn{display:inline-block;background:#16a34a;color:#fff;padding:12px 16px;borde
 def main() -> None:
     RELEASE_DIR.mkdir(exist_ok=True)
 
-    # --- meta packages (empty data, satisfy Depends from this repo) ---
-    # Low version so real ellekit/mobilesubstrate from bootstrap is preferred if present.
-    meta_ver = "0.0.1-diso"
-    ellekit_ctrl = meta_control(
-        "ellekit",
-        meta_ver,
-        "Meta package to satisfy Diso dependency (system injector already used on rootless JB).",
-    )
-    ms_ctrl = meta_control(
-        "mobilesubstrate",
-        meta_ver,
-        "Meta package to satisfy Diso dependency (hooks via ellekit/substrate on device).",
-    )
-    # placeholder file so data.tar is valid non-empty structure
-    placeholder_dirs = ["var/jb/Library/DisoMeta"]
-    placeholder_files = [
-        ("var/jb/Library/DisoMeta/README", b"Diso dependency meta-package\n", 0o644)
-    ]
-
-    ellekit_deb = RELEASE_DIR / f"ellekit_{meta_ver}_{ARCH}.deb"
-    ms_deb = RELEASE_DIR / f"mobilesubstrate_{meta_ver}_{ARCH}.deb"
-    build_deb(ellekit_ctrl, None, placeholder_files, placeholder_dirs, ellekit_deb)
-    build_deb(ms_ctrl, None, placeholder_files, placeholder_dirs, ms_deb)
-
-    # --- Diso main package ---
+    # --- Diso main package only ---
+    # Do NOT ship fake ellekit/mobilesubstrate: real ElleKit on Dopamine Conflicts
+    # with a package named mobilesubstrate and Sileo tries to remove ElleKit/CCSupport.
     postinst = (PAYLOAD / "DEBIAN" / "postinst").read_text(encoding="utf-8")
     diso_control = f"""Package: com.diso.v3
 Name: Diso
@@ -298,15 +276,21 @@ Architecture: {ARCH}
 Maintainer: Diso
 Author: Diso
 Section: Tweaks
-Depends: ellekit, mobilesubstrate, firmware (>= 15.0)
+Depends: firmware (>= 15.0)
 Replaces: com.changeinfoios.tweak, com.changeinfoios.app, com.changeinfoios, com.changeinfoios.bundle, com.changeinfoios.safari, com.changeinfoios.location, com.changeinfoios.zalo, com.changeinfoios.v3
 Conflicts: com.changeinfoios.tweak, com.changeinfoios.bundle, com.changeinfoios.v3
 Provides: com.changeinfoios.tweak
-Description: Diso device spoof package for rootless jailbreak (Dopamine). Pulls ellekit + mobilesubstrate meta packages from this repo.
+Description: Diso device spoof package for rootless jailbreak (Dopamine).
 """
     data_files, data_dirs = collect_payload()
     diso_deb = RELEASE_DIR / "Diso_4.3.1_iphoneos-arm64.deb"
     build_deb(diso_control, postinst, data_files, data_dirs, diso_deb)
+
+    # Remove old meta debs that conflict with real ElleKit on device
+    for old in RELEASE_DIR.glob("ellekit_*.deb"):
+        old.unlink(missing_ok=True)
+    for old in RELEASE_DIR.glob("mobilesubstrate_*.deb"):
+        old.unlink(missing_ok=True)
 
     # verify no backslash paths
     import tarfile as tfmod
@@ -332,34 +316,8 @@ Description: Diso device spoof package for rootless jailbreak (Dopamine). Pulls 
         if off % 2:
             off += 1
 
-    # Packages index entries
+    # Packages index: Diso only (no fake ellekit/mobilesubstrate)
     debs_meta = [
-        (
-            ellekit_deb,
-            {
-                "Package": "ellekit",
-                "Version": meta_ver,
-                "Architecture": ARCH,
-                "Maintainer": "Diso",
-                "Section": "System",
-                "Priority": "optional",
-                "Description": "Meta package to satisfy Diso dependency (system injector on rootless JB).",
-                "Name": "ellekit",
-            },
-        ),
-        (
-            ms_deb,
-            {
-                "Package": "mobilesubstrate",
-                "Version": meta_ver,
-                "Architecture": ARCH,
-                "Maintainer": "Diso",
-                "Section": "System",
-                "Priority": "optional",
-                "Description": "Meta package to satisfy Diso dependency.",
-                "Name": "MobileSubstrate",
-            },
-        ),
         (
             diso_deb,
             {
@@ -368,7 +326,7 @@ Description: Diso device spoof package for rootless jailbreak (Dopamine). Pulls 
                 "Architecture": ARCH,
                 "Maintainer": "Diso",
                 "Section": "Tweaks",
-                "Depends": "ellekit, mobilesubstrate, firmware (>= 15.0)",
+                "Depends": "firmware (>= 15.0)",
                 "Replaces": "com.changeinfoios.tweak, com.changeinfoios.app, com.changeinfoios, com.changeinfoios.bundle, com.changeinfoios.safari, com.changeinfoios.location, com.changeinfoios.zalo, com.changeinfoios.v3",
                 "Conflicts": "com.changeinfoios.tweak, com.changeinfoios.bundle, com.changeinfoios.v3",
                 "Provides": "com.changeinfoios.tweak",

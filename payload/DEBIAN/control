@@ -5,8 +5,8 @@ Architecture: iphoneos-arm64
 Maintainer: Diso
 Author: Diso
 Section: Tweaks
-Depends: ellekit, mobilesubstrate, firmware (>= 15.0)
+Depends: firmware (>= 15.0)
 Replaces: com.changeinfoios.tweak, com.changeinfoios.app, com.changeinfoios, com.changeinfoios.bundle, com.changeinfoios.safari, com.changeinfoios.location, com.changeinfoios.zalo, com.changeinfoios.v3
 Conflicts: com.changeinfoios.tweak, com.changeinfoios.bundle, com.changeinfoios.v3
 Provides: com.changeinfoios.tweak
-Description: Diso device spoof package for rootless jailbreak (Dopamine). Pulls ellekit + mobilesubstrate meta packages from this repo.
+Description: Diso device spoof package for rootless jailbreak (Dopamine).
