@@ -3,29 +3,38 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Diso APT Repo</title>
+  <title>Diso — Nguồn Sileo</title>
   <style>
-    body { font-family: -apple-system, system-ui, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 16px; line-height: 1.5; color: #18181b; }
-    code, pre { background: #f4f4f5; padding: 2px 6px; border-radius: 6px; }
-    pre { padding: 12px; overflow: auto; }
-    .box { border: 1px solid #e4e4e7; border-radius: 12px; padding: 16px; margin: 16px 0; }
-    a { color: #2563eb; }
+    body { font-family: -apple-system, system-ui, sans-serif; max-width: 720px; margin: 24px auto; padding: 0 16px; line-height: 1.55; color: #111; }
+    .box { border: 1px solid #ddd; border-radius: 12px; padding: 14px 16px; margin: 14px 0; background: #fafafa; }
+    code, pre { background: #f0f0f0; border-radius: 8px; padding: 2px 6px; }
+    pre { padding: 12px; overflow: auto; font-size: 15px; }
+    h1 { margin-bottom: 8px; }
+    .btn { display: inline-block; background: #16a34a; color: #fff; text-decoration: none; padding: 12px 16px; border-radius: 10px; font-weight: 600; }
+    .muted { color: #555; font-size: 14px; }
   </style>
 </head>
 <body>
-  <h1>Diso APT Repository</h1>
-  <p>Nguon Sileo / Zebra (rootless, <code>iphoneos-arm64</code>).</p>
+  <h1>Diso 4.3.1</h1>
+  <p><b>Nguồn Sileo đã online.</b> Package tên <code>Diso</code> (máy rootless / Dopamine).</p>
+
   <div class="box">
-    <strong>Them nguon Sileo (chu thuong):</strong>
+    <strong>Cách 1 — Thêm nguồn Sileo</strong>
     <pre>https://vpnhihi.github.io/diso/</pre>
+    <ol>
+      <li>Sileo → <b>Sources</b> → <b>+</b></li>
+      <li>Dán link → Add</li>
+      <li>Làm mới nguồn</li>
+      <li>Vào <b>Sources → Diso</b> hoặc Search gõ <b>Diso</b></li>
+      <li>Bấm cài <b>Diso</b></li>
+    </ol>
+    <p class="muted">Lưu ý: app Diso <b>không</b> tự hiện ngoài màn hình chính cho đến khi bạn cài xong trong Sileo.</p>
   </div>
+
   <div class="box">
-    <strong>Mirror (neu GitHub Pages loi):</strong>
-    <pre>https://cdn.jsdelivr.net/gh/vpnhihi/diso@main/docs/</pre>
-  </div>
-  <div class="box">
-    <strong>Package:</strong> Diso 4.3.1 (<code>com.diso.v3</code>)<br/>
-    <a href="debs/Diso_4.3.1_iphoneos-arm64.deb">Tai .deb truc tiep</a>
+    <strong>Cách 2 — Tải .deb cài trực tiếp</strong><br/><br/>
+    <a class="btn" href="debs/Diso_4.3.1_iphoneos-arm64.deb">Tải Diso_4.3.1.deb</a>
+    <p class="muted">Mở file bằng Filza hoặc Sileo để cài. Chỉ hỗ trợ jailbreak <b>rootless</b>, iOS ≥ 15.</p>
   </div>
 </body>
 </html>
