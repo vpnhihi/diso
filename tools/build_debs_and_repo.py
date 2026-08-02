@@ -57,14 +57,26 @@ def ar_write(path: Path, members: list[tuple[str, bytes]]) -> None:
     path.write_bytes(bytes(out))
 
 
+def _norm_tar_name(name: str, *, is_dir: bool = False) -> str:
+    """Debian/iOS dpkg prefers ./relative paths with forward slashes."""
+    name = name.replace("\\", "/").strip("/")
+    if not name:
+        return "."
+    if not name.startswith("./"):
+        name = "./" + name
+    if is_dir and not name.endswith("/"):
+        # ustar dir entries usually omit trailing slash; keep without
+        pass
+    return name
+
+
 def tar_xz_from_files(files: list[tuple[str, bytes, int]], dirs: list[str]) -> bytes:
-    """Create ustar tar.xz. Paths must use forward slashes, no leading slash."""
+    """Create ustar tar.xz with ./ paths (dpkg-friendly)."""
     buf = io.BytesIO()
     with tarfile.open(fileobj=buf, mode="w", format=tarfile.USTAR_FORMAT) as tf:
-        # directories first
         for d in sorted(set(dirs)):
-            d = d.strip("/").replace("\\", "/")
-            if not d:
+            d = _norm_tar_name(d, is_dir=True)
+            if d in (".", "./"):
                 continue
             info = tarfile.TarInfo(name=d)
             info.type = tarfile.DIRTYPE
@@ -76,7 +88,7 @@ def tar_xz_from_files(files: list[tuple[str, bytes, int]], dirs: list[str]) -> b
             info.gname = "wheel"
             tf.addfile(info)
         for name, data, mode in files:
-            name = name.strip("/").replace("\\", "/")
+            name = _norm_tar_name(name)
             info = tarfile.TarInfo(name=name)
             info.type = tarfile.REGTYPE
             info.size = len(data)
@@ -87,19 +99,18 @@ def tar_xz_from_files(files: list[tuple[str, bytes, int]], dirs: list[str]) -> b
             info.uname = "root"
             info.gname = "wheel"
             tf.addfile(info, io.BytesIO(data))
-    return lzma.compress(buf.getvalue(), preset=9)
+    return lzma.compress(buf.getvalue(), preset=6)
 
 
 def build_deb(control: str, postinst: str | None, data_files: list[tuple[str, bytes, int]], data_dirs: list[str], out_path: Path) -> bytes:
-    control_files = [("control", control.encode("utf-8"), 0o644)]
+    # control members as ./control ./postinst
+    control_files = [("./control", control.encode("utf-8"), 0o644)]
     if postinst:
-        control_files.append(("postinst", postinst.encode("utf-8").replace(b"\r\n", b"\n"), 0o755))
-    # DEBIAN control.tar uses members without DEBIAN/ prefix in modern debs? Actually control.tar has ./control
-    ctrl_members = []
-    ctrl_dirs: list[str] = []
-    for n, b, m in control_files:
-        ctrl_members.append((n, b, m))
-    control_tar = tar_xz_from_files(ctrl_members, ctrl_dirs)
+        pb = postinst.encode("utf-8").replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+        if not pb.endswith(b"\n"):
+            pb += b"\n"
+        control_files.append(("./postinst", pb, 0o755))
+    control_tar = tar_xz_from_files(control_files, [])
     data_tar = tar_xz_from_files(data_files, data_dirs)
     debian_binary = b"2.0\n"
     ar_write(
@@ -160,7 +171,7 @@ def write_packages_index(debs: list[tuple[Path, dict[str, str]]]) -> str:
         data = path.read_bytes()
         md5, sha1, sha256 = sha_all(data)
         fields = dict(ctrl)
-        fields["Filename"] = f"./debs/{path.name}"
+        fields["Filename"] = f"debs/{path.name}"
         fields["Size"] = str(len(data))
         fields["MD5sum"] = md5
         fields["SHA1"] = sha1
@@ -269,21 +280,23 @@ def main() -> None:
     # Do NOT ship fake ellekit/mobilesubstrate: real ElleKit on Dopamine Conflicts
     # with a package named mobilesubstrate and Sileo tries to remove ElleKit/CCSupport.
     postinst = (PAYLOAD / "DEBIAN" / "postinst").read_text(encoding="utf-8")
+    # Keep control fields standard (Name/Author belong in Packages index for Sileo UI)
     diso_control = f"""Package: com.diso.v3
-Name: Diso
-Version: 4.3.1
+Version: 4.3.1-2
 Architecture: {ARCH}
 Maintainer: Diso
-Author: Diso
 Section: Tweaks
+Priority: optional
 Depends: firmware (>= 15.0)
 Replaces: com.changeinfoios.tweak, com.changeinfoios.app, com.changeinfoios, com.changeinfoios.bundle, com.changeinfoios.safari, com.changeinfoios.location, com.changeinfoios.zalo, com.changeinfoios.v3
-Conflicts: com.changeinfoios.tweak, com.changeinfoios.bundle, com.changeinfoios.v3
 Provides: com.changeinfoios.tweak
 Description: Diso device spoof package for rootless jailbreak (Dopamine).
 """
     data_files, data_dirs = collect_payload()
-    diso_deb = RELEASE_DIR / "Diso_4.3.1_iphoneos-arm64.deb"
+    diso_deb = RELEASE_DIR / "Diso_4.3.1-2_iphoneos-arm64.deb"
+    # remove previous filename variants
+    for old in RELEASE_DIR.glob("Diso_*.deb"):
+        old.unlink(missing_ok=True)
     build_deb(diso_control, postinst, data_files, data_dirs, diso_deb)
 
     # Remove old meta debs that conflict with real ElleKit on device
@@ -322,13 +335,13 @@ Description: Diso device spoof package for rootless jailbreak (Dopamine).
             diso_deb,
             {
                 "Package": "com.diso.v3",
-                "Version": "4.3.1",
+                "Version": "4.3.1-2",
                 "Architecture": ARCH,
                 "Maintainer": "Diso",
                 "Section": "Tweaks",
+                "Priority": "optional",
                 "Depends": "firmware (>= 15.0)",
                 "Replaces": "com.changeinfoios.tweak, com.changeinfoios.app, com.changeinfoios, com.changeinfoios.bundle, com.changeinfoios.safari, com.changeinfoios.location, com.changeinfoios.zalo, com.changeinfoios.v3",
-                "Conflicts": "com.changeinfoios.tweak, com.changeinfoios.bundle, com.changeinfoios.v3",
                 "Provides": "com.changeinfoios.tweak",
                 "Description": "Diso device spoof package for rootless jailbreak (Dopamine).",
                 "Name": "Diso",

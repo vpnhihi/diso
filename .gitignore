@@ -19,3 +19,7 @@ backups/
 payload/*.tar.xz
 payload/debian-binary
 *.tmp
+
+_vidframes/
+_vidframes2327/
+

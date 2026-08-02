@@ -1,42 +1,48 @@
 #!/bin/sh
-set -e
-ROOT=/var/jb
+# Never fail package install because of optional cleanup steps.
+set +e
+ROOT="/var/jb"
 MS="$ROOT/Library/MobileSubstrate/DynamicLibraries"
 ETC="$ROOT/etc/changeinfoios"
-JBCTL=""
-for c in "$ROOT/basebin/jbctl" "/var/jb/basebin/jbctl" "$ROOT/usr/bin/jbctl"; do
-  [ -x "$c" ] && JBCTL="$c" && break
-done
 
-for f in "$MS/ChangeInfoIosMG.dylib" "$MS/ChangeInfoIosMG.plist" \
-         "$MS/ChangeInfoIosCT.dylib" "$MS/ChangeInfoIosCT.plist"; do
+for f in \
+  "$MS/ChangeInfoIosMG.dylib" "$MS/ChangeInfoIosMG.plist" \
+  "$MS/ChangeInfoIosCT.dylib" "$MS/ChangeInfoIosCT.plist"
+do
   [ -e "$f" ] || continue
-  chown root:wheel "$f" 2>/dev/null || true
+  chown root:wheel "$f" >/dev/null 2>&1
   case "$f" in
-    *.dylib) chmod 0755 "$f" 2>/dev/null || true ;;
-    *)       chmod 0644 "$f" 2>/dev/null || true ;;
+    *.dylib) chmod 0755 "$f" >/dev/null 2>&1 ;;
+    *)       chmod 0644 "$f" >/dev/null 2>&1 ;;
   esac
 done
 
-# strip com.apple.weather from injection filters (same as upstream)
-for P in "$MS/ChangeInfoIosMG.plist" "$MS/ChangeInfoIosCT.plist"; do
-  [ -f "$P" ] || continue
-  sed -i '/<string>com\.apple\.weather<\/string>/d' "$P" 2>/dev/null || true
+mkdir -p "$ETC" >/dev/null 2>&1
+chmod 0777 "$ETC" >/dev/null 2>&1
+
+JBCTL=""
+for c in "$ROOT/basebin/jbctl" "$ROOT/usr/bin/jbctl" /var/jb/basebin/jbctl; do
+  if [ -x "$c" ]; then JBCTL="$c"; break; fi
 done
-
-mkdir -p "$ETC" 2>/dev/null || true
-chmod 0777 "$ETC" 2>/dev/null || true
-
 if [ -n "$JBCTL" ] && [ -f "$ETC/cdhashes" ]; then
   while IFS= read -r h; do
-    [ -z "$h" ] && continue
-    "$JBCTL" trustcache add "$h" 2>/dev/null || true
+    [ -n "$h" ] || continue
+    "$JBCTL" trustcache add "$h" >/dev/null 2>&1
   done < "$ETC/cdhashes"
 fi
 
 APP="$ROOT/Applications/Diso.app"
-for u in uicache "$ROOT/usr/bin/uicache" /var/jb/usr/bin/uicache /usr/bin/uicache; do
-  command -v "$u" >/dev/null 2>&1 && "$u" -p "$APP" 2>/dev/null && break
-done
+if [ -d "$APP" ]; then
+  for u in "$ROOT/usr/bin/uicache" /var/jb/usr/bin/uicache uicache; do
+    if command -v "$u" >/dev/null 2>&1; then
+      "$u" -p "$APP" >/dev/null 2>&1
+      break
+    fi
+    if [ -x "$u" ]; then
+      "$u" -p "$APP" >/dev/null 2>&1
+      break
+    fi
+  done
+fi
 
 exit 0
