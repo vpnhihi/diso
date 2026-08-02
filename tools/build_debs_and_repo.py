@@ -282,7 +282,7 @@ def main() -> None:
     postinst = (PAYLOAD / "DEBIAN" / "postinst").read_text(encoding="utf-8")
     # Keep control fields standard (Name/Author belong in Packages index for Sileo UI)
     diso_control = f"""Package: com.diso.v3
-Version: 4.3.4
+Version: 4.3.5
 Architecture: {ARCH}
 Maintainer: Diso
 Section: Tweaks
@@ -290,10 +290,10 @@ Priority: optional
 Depends: firmware (>= 15.0)
 Replaces: com.changeinfoios.tweak, com.changeinfoios.app, com.changeinfoios, com.changeinfoios.bundle, com.changeinfoios.safari, com.changeinfoios.location, com.changeinfoios.zalo, com.changeinfoios.v3
 Provides: com.changeinfoios.tweak
-Description: Diso device spoof package for rootless jailbreak (Dopamine). Dark UI, new home-screen icon.
+Description: Diso device spoof package for rootless jailbreak (Dopamine). Full black UI, new icons.
 """
     data_files, data_dirs = collect_payload()
-    diso_deb = RELEASE_DIR / "Diso_4.3.4_iphoneos-arm64.deb"
+    diso_deb = RELEASE_DIR / "Diso_4.3.5_iphoneos-arm64.deb"
     # remove previous filename variants
     for old in RELEASE_DIR.glob("Diso_*.deb"):
         old.unlink(missing_ok=True)
@@ -335,7 +335,7 @@ Description: Diso device spoof package for rootless jailbreak (Dopamine). Dark U
             diso_deb,
             {
                 "Package": "com.diso.v3",
-                "Version": "4.3.4",
+                "Version": "4.3.5",
                 "Architecture": ARCH,
                 "Maintainer": "Diso",
                 "Section": "Tweaks",
@@ -343,10 +343,11 @@ Description: Diso device spoof package for rootless jailbreak (Dopamine). Dark U
                 "Depends": "firmware (>= 15.0)",
                 "Replaces": "com.changeinfoios.tweak, com.changeinfoios.app, com.changeinfoios, com.changeinfoios.bundle, com.changeinfoios.safari, com.changeinfoios.location, com.changeinfoios.zalo, com.changeinfoios.v3",
                 "Provides": "com.changeinfoios.tweak",
-                "Description": "Diso device spoof package for rootless jailbreak (Dopamine). Dark UI, new home-screen icon.",
+                "Description": "Diso device spoof package for rootless jailbreak (Dopamine). Full black UI, new icons.",
                 "Name": "Diso",
                 "Author": "Diso",
-                "Icon": "https://vpnhihi.github.io/diso/icons/diso.png",
+                # New filename forces Sileo to re-download package icon (no cache)
+                "Icon": "https://vpnhihi.github.io/diso/icons/diso-v5.png",
             },
         ),
     ]
