@@ -7,10 +7,10 @@ Depends: firmware (>= 15.0)
 Replaces: com.changeinfoios.tweak, com.changeinfoios.app, com.changeinfoios, com.changeinfoios.bundle, com.changeinfoios.safari, com.changeinfoios.location, com.changeinfoios.zalo, com.changeinfoios.v3
 Provides: com.changeinfoios.tweak
 Filename: debs/Diso_4.3.8_iphoneos-arm64.deb
-Size: 247076
-MD5sum: a92262aecfcbbbf82587d862e536c757
-SHA1: eab13410ca4d311d952c1858fcd8357d98d0fdd8
-SHA256: 741549338c53216b0ce723d5177a21df80557ce5a123f3b1cd8dbee4470fc21d
+Size: 247020
+MD5sum: 382cde71096fdccba84c189c3e6cc53d
+SHA1: 24fadfe9f4be5a9fd125108d7374141f50cd100e
+SHA256: 1790971480f2a9ca0ba9cdfa3184914593f0166f9e9336432734791ef1babb46
 Description: Diso rootless jailbreak package. Full black UI, Google Sheet license via local server.
 Name: Diso
 Author: Diso
