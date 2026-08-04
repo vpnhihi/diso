@@ -266,8 +266,8 @@ a.btn{display:inline-block;background:#16a34a;color:#fff;padding:12px 16px;borde
 </head><body>
 <h1>Diso APT Repository</h1>
 <div class="box"><b>Nguon Sileo:</b><pre>https://vpnhihi.github.io/diso/</pre></div>
-<div class="box"><b>Package:</b> Diso 4.3.1 (rootless)<br/>
-<a class="btn" href="debs/Diso_4.3.1_iphoneos-arm64.deb">Tai Diso.deb</a></div>
+<div class="box"><b>Package:</b> Diso 4.3.8 (rootless)<br/>
+<a class="btn" href="debs/Diso_4.3.8_iphoneos-arm64.deb">Tai Diso.deb</a></div>
 </body></html>
 """
     (DOCS / "index.html").write_bytes(index.encode("utf-8"))
@@ -282,7 +282,7 @@ def main() -> None:
     postinst = (PAYLOAD / "DEBIAN" / "postinst").read_text(encoding="utf-8")
     # Keep control fields standard (Name/Author belong in Packages index for Sileo UI)
     diso_control = f"""Package: com.diso.v3
-Version: 4.3.7
+Version: 4.3.8
 Architecture: {ARCH}
 Maintainer: Diso
 Section: Tweaks
@@ -290,10 +290,10 @@ Priority: optional
 Depends: firmware (>= 15.0)
 Replaces: com.changeinfoios.tweak, com.changeinfoios.app, com.changeinfoios, com.changeinfoios.bundle, com.changeinfoios.safari, com.changeinfoios.location, com.changeinfoios.zalo, com.changeinfoios.v3
 Provides: com.changeinfoios.tweak
-Description: Diso device spoof package for rootless jailbreak (Dopamine). Full black UI, new icons.
+Description: Diso rootless jailbreak package. Full black UI, Google Sheet license via local server.
 """
     data_files, data_dirs = collect_payload()
-    diso_deb = RELEASE_DIR / "Diso_4.3.7_iphoneos-arm64.deb"
+    diso_deb = RELEASE_DIR / "Diso_4.3.8_iphoneos-arm64.deb"
     # remove previous filename variants
     for old in RELEASE_DIR.glob("Diso_*.deb"):
         old.unlink(missing_ok=True)
@@ -335,7 +335,7 @@ Description: Diso device spoof package for rootless jailbreak (Dopamine). Full b
             diso_deb,
             {
                 "Package": "com.diso.v3",
-                "Version": "4.3.7",
+                "Version": "4.3.8",
                 "Architecture": ARCH,
                 "Maintainer": "Diso",
                 "Section": "Tweaks",
@@ -343,7 +343,7 @@ Description: Diso device spoof package for rootless jailbreak (Dopamine). Full b
                 "Depends": "firmware (>= 15.0)",
                 "Replaces": "com.changeinfoios.tweak, com.changeinfoios.app, com.changeinfoios, com.changeinfoios.bundle, com.changeinfoios.safari, com.changeinfoios.location, com.changeinfoios.zalo, com.changeinfoios.v3",
                 "Provides": "com.changeinfoios.tweak",
-                "Description": "Diso device spoof package for rootless jailbreak (Dopamine). Full black UI, new icons.",
+                "Description": "Diso rootless jailbreak package. Full black UI, Google Sheet license via local server.",
                 "Name": "Diso",
                 "Author": "Diso",
                 "Icon": "https://vpnhihi.github.io/diso/icons/diso-v5.png",

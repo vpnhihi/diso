@@ -1,56 +1,52 @@
-﻿# Diso
+# Diso
 
-Jailbreak package (rootless) + license server + **Sileo APT repo**.
+Package jailbreak rootless + kích key bằng **Google Sheet** + repo Sileo.
 
-## Nguon Sileo / Zebra
+## Nguồn Sileo
 
 ```
 https://vpnhihi.github.io/diso/
 ```
 
-### Cach them
-1. Sileo → **Sources** → **+**
-2. Dan: `https://vpnhihi.github.io/diso/`
-3. Refresh → tim **Diso** → Install
+## Kích key (cách đơn giản — như trước)
 
-### File APT (trong `docs/`)
-- `Release`, `Packages`, `Packages.gz`, `Packages.bz2`
-- `debs/Diso_4.3.1_iphoneos-arm64.deb`
+**Sheet:**  
+https://docs.google.com/spreadsheets/d/1cnfHaeZc1SfDCQZGWI4CDV3vXIT6kGxgCCbVwhPGyno
 
-## Tai .deb truc tiep
+| Cột | Ý nghĩa |
+|-----|---------|
+| Key | Mã kích |
+| Hạn sử dụng | Số ngày |
+| ID MÁY | UDID (trống = bind máy đầu) |
+| Tình trạng | **CHẠY** = dùng được |
 
-- Release: https://github.com/vpnhihi/diso/releases/tag/v4.3.1
-- Repo: `release/Diso_4.3.1_iphoneos-arm64.deb`
+Share sheet: **Anyone with the link → Viewer**.
 
-## License server (kich key Google Sheet)
+### Trên PC (khi cần kích key)
 
 ```bash
 cd license_server
 python diso_license_server.py
 ```
 
-iPhone khac PC:
+Mặc định: `http://127.0.0.1:7474/check.php` (app đã trỏ sẵn).
+
+**iPhone khác máy PC (cùng Wi‑Fi):**
+
+1. Lấy IP LAN PC (vd `192.168.1.10`)
+2. `python license_server/patch_license_url.py http://192.168.1.10:7474/`
+3. Build lại deb / copy binary Diso
+
+Không cần cloud / Apps Script / always-on.
+
+## Build
 
 ```bash
-python patch_license_url.py http://192.168.x.x:7474/
+python tools/simple_license_and_ui.py
+python tools/build_debs_and_repo.py
 ```
 
-## Build lai APT index
+## Yêu cầu
 
-```bash
-python tools/build_apt_repo.py
-git add docs && git commit -m "update apt" && git push
-```
-
-## Luu y quan trong ve GitHub account
-
-Neu may khac **khong** thay repo / Sileo **khong** refresh duoc:
-- Tai khoan GitHub can **public + verify email**
-- Vao https://github.com/settings/emails xac minh email
-- Vao https://github.com/settings/profile dam bao profile/repo public
-- Thu mo an danh: https://github.com/vpnhihi/diso (phai ra 200, khong 404)
-
-## Yeu cau may
-
-- iOS rootless JB, firmware >= 15
-- ellekit | mobilesubstrate
+- iOS rootless JB ≥ 15  
+- ellekit / mobilesubstrate  
