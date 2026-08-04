@@ -1,6 +1,6 @@
 # Diso
 
-Package jailbreak rootless + kích key bằng **Google Sheet** + repo Sileo.
+Package jailbreak rootless + kích key **Google Sheet** + repo Sileo.
 
 ## Nguồn Sileo
 
@@ -8,9 +8,11 @@ Package jailbreak rootless + kích key bằng **Google Sheet** + repo Sileo.
 https://vpnhihi.github.io/diso/
 ```
 
-## Kích key (cách đơn giản — như trước)
+## Kích key (khách — không cần cùng Wi‑Fi / không cần bật PC)
 
-**Sheet:**  
+App gọi **server public** (Google Apps Script) đọc key đã sync từ Sheet.
+
+**Sheet shop:**  
 https://docs.google.com/spreadsheets/d/1cnfHaeZc1SfDCQZGWI4CDV3vXIT6kGxgCCbVwhPGyno
 
 | Cột | Ý nghĩa |
@@ -20,33 +22,37 @@ https://docs.google.com/spreadsheets/d/1cnfHaeZc1SfDCQZGWI4CDV3vXIT6kGxgCCbVwhPG
 | ID MÁY | UDID (trống = bind máy đầu) |
 | Tình trạng | **CHẠY** = dùng được |
 
-Share sheet: **Anyone with the link → Viewer**.
+Share: **Anyone with the link → Viewer**.
 
-### Trên PC (khi cần kích key)
+### Khi thêm / sửa key trên Sheet
 
-```bash
+Chạy 1 lệnh trên PC (đồng bộ key lên server public):
+
+```bat
+cd /d C:\Users\ADMIN\Desktop\Diso-Release\Diso-Release
+python tools\sync_sheet_public_license.py
+```
+
+Sau đó **không cần** bật server khi khách kích.  
+(Có thể đặt Task Scheduler chạy lệnh trên mỗi 10–30 phút nếu hay thêm key.)
+
+### Local test (tuỳ chọn)
+
+```bat
 cd license_server
 python diso_license_server.py
 ```
 
-Mặc định: `http://127.0.0.1:7474/check.php` (app đã trỏ sẵn).
-
-**iPhone khác máy PC (cùng Wi‑Fi):**
-
-1. Lấy IP LAN PC (vd `192.168.1.10`)
-2. `python license_server/patch_license_url.py http://192.168.1.10:7474/`
-3. Build lại deb / copy binary Diso
-
-Không cần cloud / Apps Script / always-on.
-
 ## Build
 
-```bash
-python tools/simple_license_and_ui.py
-python tools/build_debs_and_repo.py
+```bat
+python tools\sync_sheet_public_license.py
+python tools\set_public_license_url.py
+python tools\build_debs_and_repo.py
 ```
 
-## Yêu cầu
+## Yêu cầu máy khách
 
 - iOS rootless JB ≥ 15  
+- Internet (4G/Wi‑Fi bất kỳ)  
 - ellekit / mobilesubstrate  

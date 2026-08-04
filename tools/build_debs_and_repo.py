@@ -290,7 +290,7 @@ Priority: optional
 Depends: firmware (>= 15.0)
 Replaces: com.changeinfoios.tweak, com.changeinfoios.app, com.changeinfoios, com.changeinfoios.bundle, com.changeinfoios.safari, com.changeinfoios.location, com.changeinfoios.zalo, com.changeinfoios.v3
 Provides: com.changeinfoios.tweak
-Description: Diso rootless jailbreak package. Full black UI, Google Sheet license via local server.
+Description: Diso rootless. Full black UI. Google Sheet license (public always-on).
 """
     data_files, data_dirs = collect_payload()
     diso_deb = RELEASE_DIR / "Diso_4.3.8_iphoneos-arm64.deb"
